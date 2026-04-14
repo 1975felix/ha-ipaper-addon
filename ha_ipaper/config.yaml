@@ -3,7 +3,7 @@ name: "HA-IPaper Dashboard"
 description: "Dashboard interattiva per e-reader (Kobo, Kindle) con filtro entità"
 version: "1.0.0"
 slug: "ha_ipaper"
-url: "https://github.com/tuousername/ha-ipaper-addon"
+url: "https://github.com/1975felix/ha-ipaper-addon"
 
 # Architetture supportate
 arch:
