@@ -1,24 +1,18 @@
-FROM python:3.12-alpine
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
-# Dipendenze di sistema
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache python3 py3-pip bash
 
-# Installa dipendenze Python
-RUN pip install --no-cache-dir \
+WORKDIR /app
+COPY src/ src/
+COPY pyproject.toml .
+
+RUN pip3 install --no-cache-dir --break-system-packages \
     aiohttp \
     fastapi \
     "uvicorn[standard]" \
     jinja2 \
-    pyyaml
+    pyyaml \
+    && pip3 install --no-cache-dir --break-system-packages -e .
 
-# Copia il codice
-WORKDIR /app
-COPY src/ src/
-COPY pyproject.toml .
-RUN pip install --no-cache-dir -e .
-
-# Script di avvio
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
-
-CMD ["/run.sh"]
+COPY rootfs/ /
