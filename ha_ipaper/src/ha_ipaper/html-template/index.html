@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>HA Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- MENU NAV -->
+  <nav class="menu">
+    {% for i, item in enumerate(menu) %}
+    <a href="/page/{{ i }}" class="menu-item {% if i == current_page %}active{% endif %}">
+      <img class="menu-icon"
+           src="/static/webfonts/{{ item.icon_id }}.svg"
+           alt="{{ item.name }}"
+           onerror="this.style.display='none'">
+      <span>{{ item.name }}</span>
+    </a>
+    {% endfor %}
+  </nav>
+
+  <!-- CONTENUTO PAGINA -->
+  <main class="page-content">
+    {{ components_html | safe }}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Aggiornato: {{ now }}
+  </footer>
+
+</body>
+</html>

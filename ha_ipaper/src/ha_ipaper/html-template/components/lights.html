@@ -1,0 +1,39 @@
+{# components/lights.html
+   Mostra le luci (light.*) con pulsanti on/off.
+   Il form POST passa _page per tornare alla stessa pagina dopo l'azione.
+#}
+{% set lights = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('light.') %}
+    {% set _ = lights.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if lights %}
+<section class="component lights">
+  <h2 class="component-title">Luci</h2>
+  {% for e in lights | sort(attribute='entity_id') %}
+  <div class="entity-row {% if e.state == 'on' %}entity-on{% else %}entity-off{% endif %}">
+    <span class="entity-name">{{ e.attributes.get('friendly_name', e.entity_id) }}</span>
+    <span class="entity-state-badge">{{ e.state }}</span>
+    <span class="entity-actions">
+      {% if e.state == 'on' %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="light.turn_off">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-off">Spegni</button>
+      </form>
+      {% else %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="light.turn_on">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-on">Accendi</button>
+      </form>
+      {% endif %}
+    </span>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}

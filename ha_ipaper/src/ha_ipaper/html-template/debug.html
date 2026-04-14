@@ -1,0 +1,26 @@
+{# debug.html - mostra tutte le entità caricate, utile per trovare gli entity_id #}
+<section class="component debug">
+  <h2 class="component-title">Debug — Entità caricate ({{ entities | length }})</h2>
+  <p style="font-size:0.8em; color:#555;">
+    Queste sono le entità attualmente caricate dal server.
+    Usale per compilare <code>entities_filter</code> nel config.yaml.
+  </p>
+  <table class="entity-table" style="font-size:0.75em;">
+    <thead>
+      <tr>
+        <th>entity_id</th>
+        <th>state</th>
+        <th>friendly_name</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for eid, e in entities.items() | sort %}
+    <tr>
+      <td><code>{{ eid }}</code></td>
+      <td>{{ e.state }}</td>
+      <td>{{ e.attributes.get('friendly_name', '') }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>

@@ -1,0 +1,21 @@
+configuration:
+  homeassistant_token:
+    name: Access Token (optional)
+    description: >-
+      Long-lived access token. Leave empty to use the automatic Supervisor token
+      (recommended). Create a token at: Profile → Security → Long-lived access tokens.
+  timezone:
+    name: Timezone
+    description: Timezone for the timestamp shown in the dashboard (e.g. Europe/Rome).
+  entities_filter:
+    name: Entities to display
+    description: >-
+      List of entity_ids to include in the dashboard. Only these entities will
+      be fetched from Home Assistant, fixing crashes on e-ink browsers with large
+      HA installations. Use the Debug page to discover available entity_ids.
+  menu:
+    name: Dashboard menu
+    description: Configure the pages shown in the navigation menu.
+  debug:
+    name: Debug mode
+    description: Enable verbose logging and disable template caching.

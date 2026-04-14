@@ -1,0 +1,23 @@
+configuration:
+  homeassistant_token:
+    name: Token di accesso (opzionale)
+    description: >-
+      Token di accesso a lunga durata. Lascia vuoto per usare il token
+      Supervisor automatico (raccomandato). Crea un token da: Profilo → Sicurezza →
+      Token di accesso a lunga durata.
+  timezone:
+    name: Fuso orario
+    description: Fuso orario per l'orario mostrato in dashboard (es. Europe/Rome).
+  entities_filter:
+    name: Entità da mostrare
+    description: >-
+      Lista degli entity_id da includere nella dashboard. Solo queste entità
+      vengono scaricate da Home Assistant, risolvendo il problema di crash del
+      browser e-ink con installazioni grandi. Usa la pagina Debug per scoprire
+      gli entity_id disponibili.
+  menu:
+    name: Menu della dashboard
+    description: Configura le pagine mostrate nel menu in basso.
+  debug:
+    name: Modalità debug
+    description: Attiva i log dettagliati e disabilita il caching dei template.

@@ -1,0 +1,71 @@
+{# components/climates.html #}
+{% set climates = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('climate.') %}
+    {% set _ = climates.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if climates %}
+<section class="component climates">
+  <h2 class="component-title">Clima</h2>
+  {% for e in climates | sort(attribute='entity_id') %}
+  {% set attrs = e.attributes %}
+  <div class="entity-row climate-row">
+    <div class="climate-header">
+      <span class="entity-name">{{ attrs.get('friendly_name', e.entity_id) }}</span>
+      <span class="entity-state-badge">{{ e.state }}</span>
+    </div>
+    <div class="climate-temps">
+      <span class="temp-current">
+        Attuale: <strong>{{ attrs.get('current_temperature', '—') }}{{ attrs.get('temperature_unit', '°C') }}</strong>
+      </span>
+      <span class="temp-target">
+        Target: <strong>{{ attrs.get('temperature', '—') }}{{ attrs.get('temperature_unit', '°C') }}</strong>
+      </span>
+    </div>
+    <!-- Controlli temperatura -->
+    <div class="climate-controls">
+      {% set target = attrs.get('temperature', 20) | float %}
+      {% set min_temp = attrs.get('min_temp', 7) | float %}
+      {% set max_temp = attrs.get('max_temp', 35) | float %}
+      {% set step = attrs.get('target_temp_step', 0.5) | float %}
+
+      {% if target > min_temp %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="climate.set_temperature">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" name="temperature" value="{{ (target - step) | round(1) }}" class="btn btn-temp">▼ {{ (target - step) | round(1) }}°</button>
+      </form>
+      {% endif %}
+
+      {% if target < max_temp %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="climate.set_temperature">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" name="temperature" value="{{ (target + step) | round(1) }}" class="btn btn-temp">▲ {{ (target + step) | round(1) }}°</button>
+      </form>
+      {% endif %}
+
+      {% if e.state != 'off' %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="climate.turn_off">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-off">Off</button>
+      </form>
+      {% else %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="climate.turn_on">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-on">On</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}

@@ -1,0 +1,362 @@
+/* style.css — ottimizzato per display e-ink (Kobo, Kindle)
+   Principi: bianco/nero puro, niente gradienti/ombre/animazioni,
+   font grandi leggibili, tap target almeno 44px.
+*/
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== BASE ===== */
+html {
+  font-size: 18px;         /* base più grande per e-ink */
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: #ffffff;
+  color: #000000;
+  line-height: 1.4;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ===== MENU ===== */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 2px solid #000;
+  background: #000;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  min-width: 60px;
+  border-right: 1px solid #444;
+}
+
+.menu-item.active {
+  background: #fff;
+  color: #000;
+}
+
+.menu-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 3px;
+  /* Inverti icone nel menu scuro, non nel tab attivo */
+  filter: invert(1);
+}
+
+.menu-item.active .menu-icon {
+  filter: invert(0);
+}
+
+/* ===== CONTENUTO PAGINA ===== */
+.page-content {
+  padding: 10px;
+}
+
+/* ===== SEZIONI COMPONENTI ===== */
+.component {
+  margin-bottom: 16px;
+  border: 1px solid #000;
+}
+
+.component-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 6px 10px;
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ===== TABELLA ENTITÀ (sensori) ===== */
+.entity-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.entity-table th {
+  text-align: left;
+  padding: 5px 8px;
+  border-bottom: 1px solid #000;
+  font-size: 0.8rem;
+  background: #eee;
+}
+
+.entity-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.entity-table tr:last-child td {
+  border-bottom: none;
+}
+
+.entity-name {
+  font-weight: normal;
+}
+
+.entity-state {
+  text-align: right;
+  font-weight: bold;
+}
+
+.unit {
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-left: 2px;
+}
+
+/* ===== RIGHE ENTITÀ (luci, switch, cover, clima) ===== */
+.entity-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid #ccc;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.entity-row:last-child {
+  border-bottom: none;
+}
+
+.entity-row .entity-name {
+  flex: 1;
+  min-width: 120px;
+}
+
+.entity-state-badge {
+  font-size: 0.8rem;
+  border: 1px solid #000;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.entity-on .entity-state-badge {
+  background: #000;
+  color: #fff;
+}
+
+.entity-off .entity-state-badge {
+  background: #fff;
+  color: #000;
+}
+
+.entity-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* ===== PULSANTI ===== */
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-height: 44px;    /* tap target e-ink */
+  min-width: 44px;
+  text-align: center;
+  font-family: inherit;
+}
+
+.btn:active {
+  background: #000;
+  color: #fff;
+}
+
+.btn-on {
+  background: #000;
+  color: #fff;
+}
+
+.btn-off {
+  background: #fff;
+  color: #000;
+}
+
+.btn-temp {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+}
+
+.inline-form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== CLIMA ===== */
+.climate-row {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.climate-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.climate-temps {
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.temp-current strong {
+  font-size: 1.1rem;
+}
+
+.temp-target {
+  color: #333;
+}
+
+.climate-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ===== METEO ===== */
+.weather-current {
+  padding: 10px;
+}
+
+.weather-main {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.weather-condition {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.weather-temp {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.weather-details {
+  display: flex;
+  gap: 14px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  color: #333;
+}
+
+.forecast-days {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-top: 1px solid #ccc;
+  padding-top: 8px;
+}
+
+.forecast-day {
+  border: 1px solid #ccc;
+  padding: 5px 7px;
+  font-size: 0.75rem;
+  min-width: 70px;
+  text-align: center;
+}
+
+.forecast-date {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.forecast-condition {
+  color: #333;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
+}
+
+.temp-high {
+  font-weight: bold;
+}
+
+.temp-low {
+  color: #555;
+}
+
+/* ===== DEBUG ===== */
+.debug .entity-table {
+  font-size: 0.7rem;
+}
+
+.debug code {
+  font-size: 0.75rem;
+  background: #f0f0f0;
+  padding: 1px 3px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  font-size: 0.7rem;
+  text-align: right;
+  padding: 4px 10px;
+  border-top: 1px solid #ccc;
+  color: #555;
+}
+
+/* ===== ERRORI ===== */
+.error {
+  color: #000;
+  border: 2px solid #000;
+  padding: 8px;
+  margin: 6px 0;
+  font-size: 0.85rem;
+  background: #eee;
+}
+
+/* ===== MEDIA: schermi molto piccoli (Kobo 6") ===== */
+@media (max-width: 600px) {
+  html { font-size: 16px; }
+
+  .menu-item {
+    padding: 6px 8px;
+    min-width: 50px;
+    font-size: 0.65rem;
+  }
+
+  .weather-temp {
+    font-size: 1.6rem;
+  }
+
+  .forecast-days {
+    gap: 4px;
+  }
+
+  .forecast-day {
+    min-width: 58px;
+    font-size: 0.68rem;
+  }
+}

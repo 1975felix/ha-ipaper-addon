@@ -1,0 +1,29 @@
+{# components/sensors.html
+   Mostra i sensori presenti in entities (già filtrati dal server).
+   Raggruppa per friendly_name o entity_id.
+#}
+{% set sensors = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('sensor.') %}
+    {% set _ = sensors.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if sensors %}
+<section class="component sensors">
+  <h2 class="component-title">Sensori</h2>
+  <table class="entity-table">
+    {% for e in sensors | sort(attribute='entity_id') %}
+    <tr>
+      <td class="entity-name">{{ e.attributes.get('friendly_name', e.entity_id) }}</td>
+      <td class="entity-state">
+        {{ e.state }}
+        {% if e.attributes.get('unit_of_measurement') %}
+          <span class="unit">{{ e.attributes.unit_of_measurement }}</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}

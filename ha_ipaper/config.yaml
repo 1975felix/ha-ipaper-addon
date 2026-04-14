@@ -1,0 +1,75 @@
+---
+name: "HA-IPaper Dashboard"
+description: "Dashboard interattiva per e-reader (Kobo, Kindle) con filtro entità"
+version: "1.0.0"
+slug: "ha_ipaper"
+url: "https://github.com/tuousername/ha-ipaper-addon"
+
+# Architetture supportate
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+
+# Porta esposta (accessibile da Kobo via http://<HA-IP>:8081)
+ports:
+  8081/tcp: 8081
+ports_description:
+  8081/tcp: "Dashboard e-paper web interface"
+
+# Opzioni configurabili dall'utente nell'interfaccia grafica di HA
+# Questi valori vengono scritti in /data/options.json dentro il container
+options:
+  homeassistant_token: ""
+  timezone: "Europe/Rome"
+  entities_filter:
+    - "sensor.example_temperature"
+  menu:
+    - name: "Home"
+      icon_id: "house"
+      components:
+        - "components/forecast.html"
+        - "components/sensors.html"
+    - name: "Luci"
+      icon_id: "lightbulb"
+      components:
+        - "components/lights.html"
+    - name: "Clima"
+      icon_id: "air-conditioner"
+      components:
+        - "components/climates.html"
+    - name: "Tende"
+      icon_id: "shutters"
+      components:
+        - "components/covers.html"
+    - name: "Switch"
+      icon_id: "toggle-on"
+      components:
+        - "components/switches.html"
+  debug: false
+
+# Schema di validazione delle opzioni (HA mostra form automatico)
+schema:
+  homeassistant_token: "str"
+  timezone: "str"
+  entities_filter:
+    - "str"
+  menu:
+    - name: "str"
+      icon_id: "str"
+      components:
+        - "str"
+  debug: "bool"
+
+# Accesso all'API interna di Home Assistant
+# Fornisce automaticamente SUPERVISOR_TOKEN e HA_URL al container
+hassio_api: true
+homeassistant_api: true
+
+# Permessi aggiuntivi
+ingress: false
+panel_icon: "mdi:tablet-dashboard"
+
+image: ""  # vuoto = build locale dal Dockerfile

@@ -1,0 +1,36 @@
+{# components/switches.html #}
+{% set switches = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('switch.') %}
+    {% set _ = switches.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if switches %}
+<section class="component switches">
+  <h2 class="component-title">Interruttori</h2>
+  {% for e in switches | sort(attribute='entity_id') %}
+  <div class="entity-row {% if e.state == 'on' %}entity-on{% else %}entity-off{% endif %}">
+    <span class="entity-name">{{ e.attributes.get('friendly_name', e.entity_id) }}</span>
+    <span class="entity-state-badge">{{ e.state }}</span>
+    <span class="entity-actions">
+      {% if e.state == 'on' %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="switch.turn_off">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-off">Spegni</button>
+      </form>
+      {% else %}
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="switch.turn_on">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn btn-on">Accendi</button>
+      </form>
+      {% endif %}
+    </span>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}

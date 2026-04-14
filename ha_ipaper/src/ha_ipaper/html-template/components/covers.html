@@ -1,0 +1,45 @@
+{# components/covers.html #}
+{% set covers = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('cover.') %}
+    {% set _ = covers.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if covers %}
+<section class="component covers">
+  <h2 class="component-title">Tapparelle / Tende</h2>
+  {% for e in covers | sort(attribute='entity_id') %}
+  {% set attrs = e.attributes %}
+  <div class="entity-row">
+    <span class="entity-name">{{ attrs.get('friendly_name', e.entity_id) }}</span>
+    <span class="entity-state-badge">
+      {{ e.state }}
+      {% if attrs.get('current_position') is not none %}
+        ({{ attrs.current_position }}%)
+      {% endif %}
+    </span>
+    <span class="entity-actions">
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="cover.open_cover">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn">Apri</button>
+      </form>
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="cover.stop_cover">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn">Stop</button>
+      </form>
+      <form method="POST" action="/service" class="inline-form">
+        <input type="hidden" name="service" value="cover.close_cover">
+        <input type="hidden" name="entity_id" value="{{ e.entity_id }}">
+        <input type="hidden" name="_page" value="{{ current_page }}">
+        <button type="submit" class="btn">Chiudi</button>
+      </form>
+    </span>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}

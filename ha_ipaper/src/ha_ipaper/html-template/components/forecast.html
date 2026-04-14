@@ -1,0 +1,61 @@
+{# components/forecast.html
+   Mostra lo stato meteo corrente delle entità weather.* presenti nel filtro.
+   Le previsioni orarie/giornaliere richiedono una chiamata service separata
+   che per semplicità non facciamo qui — mostriamo lo stato corrente.
+#}
+{% set weathers = [] %}
+{% for eid, e in entities.items() %}
+  {% if eid.startswith('weather.') %}
+    {% set _ = weathers.append(e) %}
+  {% endif %}
+{% endfor %}
+
+{% if weathers %}
+<section class="component forecast">
+  {% for e in weathers %}
+  {% set attrs = e.attributes %}
+  <div class="weather-current">
+    <div class="weather-main">
+      <span class="weather-condition">{{ e.state | replace('_', ' ') | title }}</span>
+      <span class="weather-temp">
+        {{ attrs.get('temperature', '—') }}{{ attrs.get('temperature_unit', '°C') }}
+      </span>
+    </div>
+    <div class="weather-details">
+      {% if attrs.get('humidity') is not none %}
+      <span>Umidità: {{ attrs.humidity }}%</span>
+      {% endif %}
+      {% if attrs.get('wind_speed') is not none %}
+      <span>Vento: {{ attrs.wind_speed }} {{ attrs.get('wind_speed_unit', 'km/h') }}</span>
+      {% endif %}
+      {% if attrs.get('pressure') is not none %}
+      <span>Pressione: {{ attrs.pressure }} {{ attrs.get('pressure_unit', 'hPa') }}</span>
+      {% endif %}
+    </div>
+
+    {# Previsioni giornaliere se disponibili negli attributi #}
+    {% set forecast = attrs.get('forecast', []) %}
+    {% if forecast %}
+    <div class="forecast-days">
+      {% for day in forecast[:5] %}
+      <div class="forecast-day">
+        <div class="forecast-date">
+          {% if day.get('datetime') %}
+            {{ day.datetime[:10] }}
+          {% endif %}
+        </div>
+        <div class="forecast-condition">{{ day.get('condition', '') | replace('_', ' ') }}</div>
+        <div class="forecast-temps">
+          <span class="temp-high">{{ day.get('temperature', '—') }}°</span>
+          {% if day.get('templow') is not none %}
+          <span class="temp-low"> / {{ day.templow }}°</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
