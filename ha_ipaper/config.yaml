@@ -32,9 +32,6 @@ schema:
   debug: "bool"
 
 hassio_api: true
-homeassistant_api: true
 
 ingress: false
 panel_icon: "mdi:tablet-dashboard"
-
-image: ""
